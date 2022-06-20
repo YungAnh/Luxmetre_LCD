@@ -76,8 +76,6 @@ int main(void)
 
   /* USER CODE BEGIN Init */
 
-
-
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -102,18 +100,40 @@ int main(void)
   //Initialisation du LCD
   lcdinit4(); //call lcdinit4
 
-
   /* USER CODE END 2 */
-
+  float voltage=0;
+  uint16_t adc_value=0;
+  int v100=0,C=0,D=0,U=0,tmp;
+  char Text_LCD1[20] = "Voltage";
+  char Text_LCD2[20] = "           ";
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
     /* USER CODE END WHILE */
 
-	  //les deux lignes qui seront affichées sur le LCD
-	  char Text_LCD1[20] = "Test LCD";
-	  char Text_LCD2[20] = "Hello World!!";
+
+
+
+	  LL_ADC_REG_StartConversion(ADC1);
+	  //while(LL_ADC_IsActiveFlag_EOC(ADC1) == 0);
+	  //LL_ADC_ClearFlag_EOC(ADC1);
+	  adc_value=LL_ADC_REG_ReadConversionData12(ADC1);
+	  voltage=adc_value*5.0/4095.0;
+
+	  voltage=4.324;
+
+
+	  v100=voltage*100;
+	  C=v100/100;
+	  tmp=v100%100;
+	  D=tmp/10;
+	  U=tmp%10;
+	  Text_LCD2[0] = C+48;
+	  Text_LCD2[1] = 46;
+	  Text_LCD2[2] = D+48;
+	  Text_LCD2[3] = U+48;
+
 	  //Affichage sur le LCD
 	  Affichage_LCD(Text_LCD1, Text_LCD2); //call Affichage_LCD
 

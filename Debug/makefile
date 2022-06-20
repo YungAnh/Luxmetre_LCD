@@ -60,8 +60,8 @@ all: main-build
 main-build: Luxmetre_LCD.elf secondary-outputs
 
 # Tool invocations
-Luxmetre_LCD.elf Luxmetre_LCD.map: $(OBJS) $(USER_OBJS) C:\Users\Ahmed\STM32CubeIDE\workspace_1.9.0\Luxmetre_LCD\STM32L053R8TX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "Luxmetre_LCD.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m0plus -T"C:\Users\Ahmed\STM32CubeIDE\workspace_1.9.0\Luxmetre_LCD\STM32L053R8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Luxmetre_LCD.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Luxmetre_LCD.elf Luxmetre_LCD.map: $(OBJS) $(USER_OBJS) C:\Users\Ahmed\Documents\GitHub\Luxmetre_LCD\STM32L053R8TX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "Luxmetre_LCD.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m0plus -T"C:\Users\Ahmed\Documents\GitHub\Luxmetre_LCD\STM32L053R8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Luxmetre_LCD.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
