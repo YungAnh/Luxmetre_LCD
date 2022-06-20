@@ -1,0 +1,8 @@
+../Src/lcd.c:4:6:Ecrire	0	static
+../Src/lcd.c:26:6:toggle_e	16	static
+../Src/lcd.c:38:6:D_set_E_Toggle	16	static
+../Src/lcd.c:48:6:EcrireFonction	16	static
+../Src/lcd.c:71:6:EcrireCaractere	16	static
+../Src/lcd.c:90:6:EcrireChaine	24	static
+../Src/lcd.c:96:6:lcdinit4	40	static
+../Src/lcd.c:158:6:Affichage_LCD	48	static
