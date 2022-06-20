@@ -9,9 +9,9 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
--include Startup/subdir.mk
--include Src/subdir.mk
 -include Drivers/STM32L0xx_HAL_Driver/Src/subdir.mk
+-include Core/Startup/subdir.mk
+-include Core/Src/subdir.mk
 -include objects.mk
 
 ifneq ($(MAKECMDGOALS),clean)
@@ -34,34 +34,34 @@ $(wildcard ../makefile.init) \
 $(wildcard ../makefile.targets) \
 
 
-BUILD_ARTIFACT_NAME := PoC_LAHFAYA_Ango
+BUILD_ARTIFACT_NAME := Luxmetre_LCD
 BUILD_ARTIFACT_EXTENSION := elf
 BUILD_ARTIFACT_PREFIX :=
 BUILD_ARTIFACT := $(BUILD_ARTIFACT_PREFIX)$(BUILD_ARTIFACT_NAME)$(if $(BUILD_ARTIFACT_EXTENSION),.$(BUILD_ARTIFACT_EXTENSION),)
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXECUTABLES += \
-PoC_LAHFAYA_Ango.elf \
+Luxmetre_LCD.elf \
 
 MAP_FILES += \
-PoC_LAHFAYA_Ango.map \
+Luxmetre_LCD.map \
 
 SIZE_OUTPUT += \
 default.size.stdout \
 
 OBJDUMP_LIST += \
-PoC_LAHFAYA_Ango.list \
+Luxmetre_LCD.list \
 
 
 # All Target
 all: main-build
 
 # Main-build Target
-main-build: PoC_LAHFAYA_Ango.elf secondary-outputs
+main-build: Luxmetre_LCD.elf secondary-outputs
 
 # Tool invocations
-PoC_LAHFAYA_Ango.elf PoC_LAHFAYA_Ango.map: $(OBJS) $(USER_OBJS) C:\Users\LAHFAYA\Desktop\PoC\PoC_LAHFAYA_Ango\STM32L053R8HX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "PoC_LAHFAYA_Ango.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m0plus -T"C:\Users\LAHFAYA\Desktop\PoC\PoC_LAHFAYA_Ango\STM32L053R8HX_FLASH.ld" --specs=nosys.specs -Wl,-Map="PoC_LAHFAYA_Ango.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Luxmetre_LCD.elf Luxmetre_LCD.map: $(OBJS) $(USER_OBJS) C:\Users\Ahmed\STM32CubeIDE\workspace_1.9.0\Luxmetre_LCD\STM32L053R8TX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "Luxmetre_LCD.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m0plus -T"C:\Users\Ahmed\STM32CubeIDE\workspace_1.9.0\Luxmetre_LCD\STM32L053R8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Luxmetre_LCD.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -70,14 +70,14 @@ default.size.stdout: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo 'Finished building: $@'
 	@echo ' '
 
-PoC_LAHFAYA_Ango.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "PoC_LAHFAYA_Ango.list"
+Luxmetre_LCD.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "Luxmetre_LCD.list"
 	@echo 'Finished building: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) PoC_LAHFAYA_Ango.elf PoC_LAHFAYA_Ango.list PoC_LAHFAYA_Ango.map default.size.stdout
+	-$(RM) Luxmetre_LCD.elf Luxmetre_LCD.list Luxmetre_LCD.map default.size.stdout
 	-@echo ' '
 
 secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST)
