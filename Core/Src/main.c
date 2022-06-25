@@ -101,11 +101,14 @@ int main(void)
   lcdinit4(); //call lcdinit4
 
   /* USER CODE END 2 */
-  float voltage=0;
+  float voltage=0,Lumens=0;
   uint16_t adc_value=0;
-  int v100=0,C=0,D=0,U=0,tmp;
-  char Text_LCD1[20] = "Voltage";
-  char Text_LCD2[20] = "           ";
+
+  int tmpV=0,m=0,c=0,d=0,u=0;
+  int tmpL=0,M10=0,M=0,C=0,D=0,U=0;
+
+  char Text_LCD1[16] = "Voltage u.dcm V ";
+  char Text_LCD2[16] = "Lumens MMCDU lm ";
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
@@ -113,29 +116,50 @@ int main(void)
     /* USER CODE END WHILE */
 
 
+		LL_ADC_REG_StartConversion(ADC1);
+		//while(LL_ADC_IsActiveFlag_EOC(ADC1) == 0);
+		//LL_ADC_ClearFlag_EOC(ADC1);
+		adc_value=LL_ADC_REG_ReadConversionData12(ADC1);
+		voltage=adc_value*5.0/4095.0;
+
+		voltage=4.324;
+
+		Lumens=4804.5;
 
 
-	  LL_ADC_REG_StartConversion(ADC1);
-	  //while(LL_ADC_IsActiveFlag_EOC(ADC1) == 0);
-	  //LL_ADC_ClearFlag_EOC(ADC1);
-	  adc_value=LL_ADC_REG_ReadConversionData12(ADC1);
-	  voltage=adc_value*5.0/4095.0;
+		tmpV=voltage*1000;
+		u=tmpV/1000; //Unite
+		tmpV=tmpV%1000;
+		d=tmpV/100; //Dixieme
+		tmpV=tmpV%100;
+		c=tmpV/10; //Centieme
+		m=tmpV%10; //Milieme
 
-	  voltage=4.324;
 
+		Text_LCD1[8] = u+48;
+		Text_LCD1[10] = d+48;
+		Text_LCD1[11] = c+48;
+		Text_LCD1[12] = m+48;
 
-	  v100=voltage*100;
-	  C=v100/100;
-	  tmp=v100%100;
-	  D=tmp/10;
-	  U=tmp%10;
-	  Text_LCD2[0] = C+48;
-	  Text_LCD2[1] = 46;
-	  Text_LCD2[2] = D+48;
-	  Text_LCD2[3] = U+48;
+		tmpL=Lumens;
+		M10=tmpL/10000; //10^4
+		tmpL=tmpL%10000;
+		M=tmpL/1000; //10^3
+		tmpL=tmpL%1000;
+		C=tmpL/100; //10^2
+		tmpL=tmpL%100;
+		D=tmpL/10; //10^1
+		U=tmpL%10; //10^0
 
-	  //Affichage sur le LCD
-	  Affichage_LCD(Text_LCD1, Text_LCD2); //call Affichage_LCD
+		Text_LCD2[7] = M10+48;
+		Text_LCD2[8] = M+48;
+		Text_LCD2[9] = C+48;
+		Text_LCD2[10] = D+48;
+		Text_LCD2[11] = U+48;
+
+		//Affichage sur le LCD
+		Affichage_LCD(Text_LCD1, Text_LCD2); //call Affichage_LCD
+
 
     /* USER CODE BEGIN 3 */
   }
