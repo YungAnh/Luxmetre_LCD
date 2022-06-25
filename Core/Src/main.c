@@ -95,36 +95,44 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   MX_ADC_Init();
+
   /* USER CODE BEGIN 2 */
 
   //Initialisation du LCD
   lcdinit4(); //call lcdinit4
+  LL_ADC_StartCalibration(ADC1);
+  while(LL_ADC_IsCalibrationOnGoing(ADC1) != 0);
+
 
   /* USER CODE END 2 */
-  float voltage=0,Lumens=0;
+  float voltage=0;
+  int Lumens=0,Resistance=0;
   uint16_t adc_value=0;
+  int resistor_value=220;
 
   int tmpV=0,m=0,c=0,d=0,u=0;
-  int tmpL=0,M10=0,M=0,C=0,D=0,U=0;
+  int tmpL=0,M100=0,M10=0,M=0,C=0,D=0,U=0;
 
   char Text_LCD1[16] = "Voltage u.dcm V ";
-  char Text_LCD2[16] = "Lumens MMCDU lm ";
+  //char Text_LCD2[16] = "Lumens MMMCDU lm";
+  char Text_LCD2[16] = "Res MMMCDU ohm  ";
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
     /* USER CODE END WHILE */
 
-
+	    LL_ADC_Enable(ADC1);
 		LL_ADC_REG_StartConversion(ADC1);
-		//while(LL_ADC_IsActiveFlag_EOC(ADC1) == 0);
-		//LL_ADC_ClearFlag_EOC(ADC1);
+		while(LL_ADC_REG_IsConversionOngoing(ADC1) != 0);
+
 		adc_value=LL_ADC_REG_ReadConversionData12(ADC1);
+
 		voltage=adc_value*5.0/4095.0;
 
-		voltage=4.324;
+		Resistance=resistor_value * ((5.0/voltage) - 1.0); //10k * ( (Vin/Vout) -1)
 
-		Lumens=4804.5;
+		Lumens=Resistance;
 
 
 		tmpV=voltage*1000;
@@ -142,6 +150,8 @@ int main(void)
 		Text_LCD1[12] = m+48;
 
 		tmpL=Lumens;
+		M10=tmpL/100000; //10^5
+		tmpL=tmpL%100000;
 		M10=tmpL/10000; //10^4
 		tmpL=tmpL%10000;
 		M=tmpL/1000; //10^3
@@ -151,15 +161,25 @@ int main(void)
 		D=tmpL/10; //10^1
 		U=tmpL%10; //10^0
 
-		Text_LCD2[7] = M10+48;
-		Text_LCD2[8] = M+48;
-		Text_LCD2[9] = C+48;
-		Text_LCD2[10] = D+48;
-		Text_LCD2[11] = U+48;
+
+//		Text_LCD2[7] = M100+48;
+//		Text_LCD2[8] = M10+48;
+//		Text_LCD2[9] = M+48;
+//		Text_LCD2[10] = C+48;
+//		Text_LCD2[11] = D+48;
+//		Text_LCD2[12] = U+48;
+
+		Text_LCD2[4] = M100+48;
+		Text_LCD2[5] = M10+48;
+		Text_LCD2[6] = M+48;
+		Text_LCD2[7] = C+48;
+		Text_LCD2[8] = D+48;
+		Text_LCD2[9] = U+48;
 
 		//Affichage sur le LCD
 		Affichage_LCD(Text_LCD1, Text_LCD2); //call Affichage_LCD
 
+		LL_mDelay(330000);
 
     /* USER CODE BEGIN 3 */
   }
